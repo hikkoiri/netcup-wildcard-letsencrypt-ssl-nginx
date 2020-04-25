@@ -74,12 +74,12 @@ You can configure the application over environment variables. The key needs to b
 
 |env var|mandatory?| default value | description|
 |---|---|---|---|
-|debug|no|FALSE| |
-|email|yes|n/a| |
-|domain|yes|n/a| |
-|netcup_customer_nr|yes|n/a||
-|netcup_api_key|yes|n/a||
-|netcup_api_password|yes|n/a||
+|debug|no|false| when set to `true` the certificate will be fetched from a staging server. Use that for testing and developing to avoid running into rate limits|
+|email|yes|n/a| needed by certbot|
+|domain|yes|n/a| for example: `example-domain.de`|
+|netcup_customer_nr|yes|n/a|available from netcup ccp|
+|netcup_api_key|yes|n/a| available from netcup ccp|
+|netcup_api_password|yes|n/a| available from netcup ccp|
 
 The container most probably needs to expose ports. This configuration can be project specific, but for the most common use case you want to serve:
 
@@ -91,6 +91,6 @@ The container most probably needs to expose ports. This configuration can be pro
 Volume mounts, which are relevant:
 
 |container path|content| description|
-|---|---|
+|---|---|---|
 |/opt/app/output|<ul><li>**cert.pem** - public certificate</li><li>**privkey.pem** - private key, NEVER SHARE THIS ONE WITH SOMEONE</li></ul>|To reuse the certificates, you should mount the following container folders to your host file system|
 |/usr/share/nginx/ |<ul><li>**nginx.conf**</li></ul>| This nginx configuration is loaded by the nginx service and needs to be provided by you. To you use the certificates, use the oath above and have a look into the sample nginx.conf provided by me.|
