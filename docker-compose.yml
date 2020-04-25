@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  netcup-wildcard-letsencrypt-ssl-nginx:
+    build: 
+      context: ./
+    environment: 
+      debug: "true"
+      domain: ""
+      email: ""
+      netcup_customer_nr: ""
+      netcup_api_key: ""
+      netcup_api_password: ""
+    volumes: 
+      - "./:/opt/app/output"
+    ports:
+      - "80:80"
+      - "443:443"
