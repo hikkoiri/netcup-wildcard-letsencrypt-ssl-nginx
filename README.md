@@ -54,9 +54,11 @@ docker run \
   -p 80:80 \
   -p 443:443 \
   -v "./:/opt/app/output" \
+  -v "./nginx.conf:/usr/share/nginx/nginx.conf" \
   netcup-wildcard-letsencrypt-ssl-nginx:0.0.1
 
 #docker-compose template
+cd samples
 docker-compose up --build
 ```
 
@@ -86,8 +88,9 @@ The container most probably needs to expose ports. This configuration can be pro
 |http|80|
 |https|443|
 
-To reuse the certificates, you should mount the following container folders to your host file system:
+Volume mounts, which are relevant:
 
-|container path|content|
+|container path|content| description|
 |---|---|
-|/opt/app/output|<ul><li>**cert.pem** - public certificate</li><li>**privkey.pem** - private key, NEVER SHARE THIS ONE WITH SOMEONE</li></ul>|
+|/opt/app/output|<ul><li>**cert.pem** - public certificate</li><li>**privkey.pem** - private key, NEVER SHARE THIS ONE WITH SOMEONE</li></ul>|To reuse the certificates, you should mount the following container folders to your host file system|
+|/usr/share/nginx/ |<ul><li>**nginx.conf**</li></ul>| This nginx configuration is loaded by the nginx service and needs to be provided by you. To you use the certificates, use the oath above and have a look into the sample nginx.conf provided by me.|
