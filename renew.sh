@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 echo
 echo "Checking if certificate is still valid for the next 24 hrs"
 echo "Current date & time: $(date)"
+
 if openssl x509 -checkend 86400 -noout -in ${APP_HOME}output/cert.pem
 then
     echo "Certificate is good for another day!"
@@ -46,6 +47,6 @@ else
     #restart nginx
     echo
     echo 'Reloading nginx service'
-    service nginx reload
+    /usr/sbin/service nginx reload
 fi
 echo END

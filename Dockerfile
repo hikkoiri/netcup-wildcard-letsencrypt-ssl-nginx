@@ -3,9 +3,6 @@ FROM ubuntu:xenial-20200326
 ENV APP_HOME=/opt/app/
 WORKDIR $APP_HOME
 
-# enable non interactive shell
-#ENV DEBIAN_FRONTEND=noninteractive
-
 # install certbot and netcup addon
 RUN apt-get update -y
 RUN apt-get upgrade -y
@@ -26,11 +23,11 @@ RUN chmod +x entrypoint.sh renew.sh
 #Create crontab for certificate renewal
 ENV RENEW_SH_FILE=${APP_HOME}renew.sh
 ENV CRONTAB_FILE=/var/spool/cron/crontabs/root
-ENV ENV_FILE=${APP_HOME}input/environment
+ENV ENV_FILE=/etc/environment
 ENV CRON_LOG_FILE=/var/log/cron.log
 RUN touch ${CRON_LOG_FILE}
-RUN echo "* */12 * * * . ${ENV_FILE}; ${RENEW_SH_FILE} >> ${CRON_LOG_FILE} 2>&1\n" >> ${CRONTAB_FILE}
+RUN echo "* */12 * * * ${RENEW_SH_FILE} >> ${CRON_LOG_FILE} 2>&1\n" >> ${CRONTAB_FILE}
 
-ENV DEBUG="false"
+ENV debug="false"
 
 CMD [ "./entrypoint.sh" ]

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Starting netcup-wildcard-letsencrypt-ssl-nginx"
 
@@ -37,9 +37,9 @@ fi
 
 echo "debug is set to $debug";
 if [ $debug = "true" ]; then
-    DEBUG_FLAG='--test-cert'
-elif [ $debug = "false" ]; then
-    DEBUG_FLAG=''
+    export DEBUG_FLAG='--test-cert'
+    elif [ $debug = "false" ]; then
+    export DEBUG_FLAG=''
 else
     echo "debug can only be set to 'true' or 'false'. Exiting"
     exit 1
@@ -50,14 +50,19 @@ NGINX_CONF_FILE=/usr/share/nginx/nginx.conf
 echo "Checking if $NGINX_CONF_FILE  exists"
 if [ -f "$NGINX_CONF_FILE" ]; then
     echo "$NGINX_CONF_FILE exist"
+else
+    echo "$NGINX_CONF_FILE does not exist"
+    exit 1
 fi
 
 echo
-NETCUP_CREDENTIALS_FILE=${APP_HOME}input/netcup_credentials.ini
+export NETCUP_CREDENTIALS_FILE=${APP_HOME}input/netcup_credentials.ini
 echo "Saving netcup credentials in $NETCUP_CREDENTIALS_FILE"
+mkdir ${APP_HOME}input
 echo "certbot_dns_netcup:dns_netcup_customer_id  = $netcup_customer_nr" >> $NETCUP_CREDENTIALS_FILE
 echo "certbot_dns_netcup:dns_netcup_api_key      = $netcup_api_key" >> $NETCUP_CREDENTIALS_FILE
 echo "certbot_dns_netcup:dns_netcup_api_password = $netcup_api_password" >> $NETCUP_CREDENTIALS_FILE
+chmod 400 $NETCUP_CREDENTIALS_FILE
 
 echo
 echo "Saving current env vars to ${ENV_FILE} for cron job"
