@@ -11,7 +11,7 @@ services:
       netcup_api_key: ""
       netcup_api_password: ""
     volumes: 
-      - "./:/opt/app/output"
+      - "./sample_out:/opt/app/output"
       - "./nginx.conf:/usr/share/nginx/nginx.conf"
     ports:
       - "80:80"
