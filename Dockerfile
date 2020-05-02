@@ -26,7 +26,7 @@ ENV CRONTAB_FILE=/var/spool/cron/crontabs/root
 ENV ENV_FILE=/etc/environment
 ENV CRON_LOG_FILE=/var/log/cron.log
 RUN touch ${CRON_LOG_FILE}
-RUN echo "* */12 * * * ${RENEW_SH_FILE} >> ${CRON_LOG_FILE} 2>&1\n" >> ${CRONTAB_FILE}
+RUN echo "0 */12 * * * ${RENEW_SH_FILE} >> ${CRON_LOG_FILE} 2>&1\n" >> ${CRONTAB_FILE}
 
 ENV debug="false"
 
