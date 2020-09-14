@@ -1,4 +1,4 @@
-FROM ubuntu:xenial-20200326
+FROM ubuntu
 
 ENV APP_HOME=/opt/app/
 WORKDIR $APP_HOME
@@ -8,8 +8,8 @@ RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository universe
-RUN add-apt-repository ppa:certbot/certbot
-RUN apt-get update
+#RUN add-apt-repository ppa:certbot/certbot
+#RUN apt-get update
 RUN apt-get install -y certbot python3 python3-pip
 RUN pip3 install certbot-dns-netcup
 
@@ -25,6 +25,8 @@ ENV RENEW_SH_FILE=${APP_HOME}renew.sh
 ENV CRONTAB_FILE=/var/spool/cron/crontabs/root
 ENV ENV_FILE=/etc/environment
 ENV CRON_LOG_FILE=/var/log/cron.log
+#RUN mkdir -p /var/spool/cron/crontabs
+RUN apt-get install cron
 RUN touch ${CRON_LOG_FILE}
 RUN echo "0 */12 * * * ${RENEW_SH_FILE} >> ${CRON_LOG_FILE} 2>&1\n" >> ${CRONTAB_FILE}
 
