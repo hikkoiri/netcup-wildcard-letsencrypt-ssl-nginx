@@ -35,7 +35,7 @@ else
     #copy necessary credentials to mounted host directory
     echo
     echo 'Copying certificates into a safe location'
-    cp /etc/letsencrypt/live/$domain/cert.pem ${APP_HOME}output
+    cp /etc/letsencrypt/live/$domain/fullchain.pem ${APP_HOME}output/cert.pem
     cp /etc/letsencrypt/live/$domain/privkey.pem ${APP_HOME}output
     
     # delete interim folders
