@@ -59,9 +59,9 @@ echo
 export NETCUP_CREDENTIALS_FILE=${APP_HOME}input/netcup_credentials.ini
 echo "Saving netcup credentials in $NETCUP_CREDENTIALS_FILE"
 mkdir ${APP_HOME}input
-echo "certbot_dns_netcup:dns_netcup_customer_id  = $netcup_customer_nr" >> $NETCUP_CREDENTIALS_FILE
-echo "certbot_dns_netcup:dns_netcup_api_key      = $netcup_api_key" >> $NETCUP_CREDENTIALS_FILE
-echo "certbot_dns_netcup:dns_netcup_api_password = $netcup_api_password" >> $NETCUP_CREDENTIALS_FILE
+echo "dns_netcup_customer_id  = $netcup_customer_nr" >> $NETCUP_CREDENTIALS_FILE
+echo "dns_netcup_api_key      = $netcup_api_key" >> $NETCUP_CREDENTIALS_FILE
+echo "dns_netcup_api_password = $netcup_api_password" >> $NETCUP_CREDENTIALS_FILE
 chmod 400 $NETCUP_CREDENTIALS_FILE
 
 echo
@@ -82,9 +82,9 @@ else
     
     # fetch certificates with certbot
     certbot certonly \
-    --authenticator certbot-dns-netcup:dns-netcup \
-    --certbot-dns-netcup:dns-netcup-propagation-seconds 900 \
-    --certbot-dns-netcup:dns-netcup-credentials $NETCUP_CREDENTIALS_FILE \
+    --authenticator dns-netcup \
+    --dns-netcup-propagation-seconds 900 \
+    --dns-netcup-credentials $NETCUP_CREDENTIALS_FILE \
     --no-self-upgrade \
     --keep-until-expiring \
     --non-interactive \

@@ -12,9 +12,9 @@ else
     echo "(or is invalid/not found)"
     
     certbot certonly \
-    --authenticator certbot-dns-netcup:dns-netcup \
-    --certbot-dns-netcup:dns-netcup-propagation-seconds 900 \
-    --certbot-dns-netcup:dns-netcup-credentials $NETCUP_CREDENTIALS_FILE \
+    --authenticator dns-netcup \
+    --dns-netcup-propagation-seconds 900 \
+    --dns-netcup-credentials $NETCUP_CREDENTIALS_FILE \
     --no-self-upgrade \
     --keep-until-expiring \
     --non-interactive \
