@@ -120,7 +120,7 @@ nginx -c $NGINX_CONF_FILE
 
 #start the periodoc command scheduler cron for certificate renewal
 echo
-echo "Starting cron daemon and tailing cron logs:"
+echo "Tailing cron logs:"
 crontab $CRONTAB_FILE
-cron
+crond -x load -n
 tail -f ${CRON_LOG_FILE}

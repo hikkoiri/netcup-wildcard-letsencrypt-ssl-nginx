@@ -1,35 +1,29 @@
-FROM ubuntu
+FROM fedora:latest
 
 ENV APP_HOME=/opt/app/
 WORKDIR $APP_HOME
 
-# install certbot and netcup addon
-RUN apt-get update -y
-RUN apt-get upgrade -y
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository universe
-#RUN add-apt-repository ppa:certbot/certbot
-#RUN apt-get update
-RUN apt-get install -y certbot python3 python3-pip
-RUN pip3 install certbot-dns-netcup
-
-# install nginx
-RUN apt-get install -y nginx 
+#https://github.com/coldfix/certbot-dns-netcup/issues/11
+RUN dnf update -y &&\
+     dnf install -y certbot python3-pip nginx cronie cronie-anacron &&\
+    pip3 install 'dns-lexicon==3.5' &&\ 
+    pip3 install certbot-dns-netcup
 
 #copy scripts and make them executable
-COPY ./*.sh ./
-RUN chmod +x entrypoint.sh renew.sh
+COPY entrypoint renew ./
+RUN chmod +x entrypoint renew
 
 #Create crontab for certificate renewal
-ENV RENEW_SH_FILE=${APP_HOME}renew.sh
+ENV RENEW_SH_FILE=${APP_HOME}renew
 ENV CRONTAB_FILE=/var/spool/cron/crontabs/root
 ENV ENV_FILE=/etc/environment
-ENV CRON_LOG_FILE=/var/log/cron.log
-#RUN mkdir -p /var/spool/cron/crontabs
-RUN apt-get install cron
-RUN touch ${CRON_LOG_FILE}
-RUN echo "0 */12 * * * ${RENEW_SH_FILE} >> ${CRON_LOG_FILE} 2>&1\n" >> ${CRONTAB_FILE}
+ENV CRON_LOG_FILE=/var/log/cron
+RUN mkdir -p /var/spool/cron/crontabs &&\
+    touch ${CRON_LOG_FILE} &&\
+    echo "0 */12 * * * ${RENEW_SH_FILE} >> ${CRON_LOG_FILE} \n" >> ${CRONTAB_FILE}
+
+RUN  useradd www-data
 
 ENV debug="false"
 
-CMD [ "./entrypoint.sh" ]
+CMD [ "./entrypoint" ]
